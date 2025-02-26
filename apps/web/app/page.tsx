@@ -1,10 +1,10 @@
 import { JSX } from "react/jsx-runtime";
+import { Hero } from "@repo/ui/landing/hero";
 
 export default function Page(): JSX.Element {
   return(
-    <div>
-      <h1>Welcome to SnippetShop</h1>
-      <p>This is the home page, rendered on the server.</p>
+    <div className="mx-4 my-4">
+      <Hero />
     </div>
   )
 }
