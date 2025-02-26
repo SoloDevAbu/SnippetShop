@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums for Role and Status
+enum Role {
+  DEVELOPER
+  USER
+}
+
+enum Status {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+// User Model
+model User {
+  id            String        @id @default(cuid())
+  email         String        @unique
+  name          String?
+  role          Role
+  provider      String
+  provider_id   Int        @unique
+  created_at    DateTime      @default(now())
+  code_snippets CodeSnippet[] // One-to-many relation with CodeSnippet
+  purchases     Purchase[]    // One-to-many relation with Purchase
+}
+
+// Category Model
+model Category {
+  id            String        @id @default(cuid())
+  name          String        @unique
+  code_snippets CodeSnippet[] // One-to-many relation with CodeSnippet
+}
+
+// Language Model
+model Language {
+  id            String        @id @default(cuid())
+  name          String        @unique
+  judge0_id     Int           @unique
+  code_snippets CodeSnippet[] // One-to-many relation with CodeSnippet
+}
+
+// Tag Model
+model Tag {
+  id                String           @id @default(cuid())
+  name              String           @unique
+  code_snippet_tags CodeSnippetTag[] // One-to-many relation with CodeSnippetTag
+}
+
+// CodeSnippet Model
+model CodeSnippet {
+  id                String           @id @default(cuid())
+  title             String
+  description       String
+  category_id       String
+  language_id       String
+  developer_id      String
+  file_name         String
+  code_key          String
+  created_at        DateTime         @default(now())
+  updated_at        DateTime         @updatedAt
+  status            Status           @default(PENDING)
+  test_cases        TestCase[]       // One-to-many relation with TestCase
+  code_snippet_tags CodeSnippetTag[] // One-to-many relation with CodeSnippetTag
+  purchases         Purchase[]       // One-to-many relation with Purchase
+  category          Category         @relation(fields: [category_id], references: [id])
+  language          Language         @relation(fields: [language_id], references: [id])
+  developer         User             @relation(fields: [developer_id], references: [id])
+}
+
+// TestCase Model
+model TestCase {
+  id              String      @id @default(cuid())
+  code_snippet_id String
+  input           String
+  expected_output String
+  created_at      DateTime    @default(now())
+  code_snippet    CodeSnippet @relation(fields: [code_snippet_id], references: [id])
+}
+
+// CodeSnippetTag Model (Many-to-Many Relation)
+model CodeSnippetTag {
+  code_snippet_id String
+  tag_id          String
+  code_snippet    CodeSnippet @relation(fields: [code_snippet_id], references: [id])
+  tag             Tag         @relation(fields: [tag_id], references: [id])
+  @@id([code_snippet_id, tag_id]) // Composite primary key
+}
+
+// Purchase Model
+model Purchase {
+  id              String      @id @default(cuid())
+  user_id         String
+  code_snippet_id String
+  zip_file_key    String
+  password        String
+  purchased_at    DateTime    @default(now())
+  user            User        @relation(fields: [user_id], references: [id])
+  code_snippet    CodeSnippet @relation(fields: [code_snippet_id], references: [id])
+}
