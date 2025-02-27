@@ -5,7 +5,7 @@ import { Button } from "./button";
 export const Appbar = () => {
   const { data: session } = useSession();
   return (
-    <div className="flex justify-between border-b px-4 py-4 items-center mx-4 rounded-md shadow-sm shadow-gray-500 mt-2">
+    <div className="fixed top-0 left-0 right-0 flex justify-between border-b px-4 py-4 items-center mx-4 rounded-md shadow-sm shadow-gray-500 mt-2 bg-white z-50">
       <div className="text-lg flex flex-col justify-center">
         SnippetShop
       </div>

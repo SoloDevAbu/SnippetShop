@@ -26,7 +26,7 @@ model User {
   name          String?
   role          Role
   provider      String
-  provider_id   Int        @unique
+  provider_id   Int?        @unique
   created_at    DateTime      @default(now())
   code_snippets CodeSnippet[] // One-to-many relation with CodeSnippet
   purchases     Purchase[]    // One-to-many relation with Purchase

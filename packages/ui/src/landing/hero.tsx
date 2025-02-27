@@ -1,8 +1,7 @@
+
 import React from 'react'
 import { Card } from '../components/card'
-import js from '../assets/js.png';
-import cpp from '../assets/c++.png';
-import java from '../assets/java.png';
+import { categories } from '../constants/categories'
 
 export const Hero = () => {
     return (
@@ -14,10 +13,10 @@ export const Hero = () => {
             <div className="flex justify-center text-center">
                 <p> highly optimised with variety of language options that best suits your need and create amazing websites & apps.</p>
             </div>
-            <div className='flex gap-4'>
-                <Card image={js} title="JavaScript" />
-                <Card image={cpp} title='JavaScript' />
-                <Card image={java} title='JavaScript' />
+            <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4'>
+                {categories.map((category) => (
+                    <Card key={category.id} title={category.title} image={category.image} category={category.id}/>
+                ))}
             </div>
         </div>
     )
