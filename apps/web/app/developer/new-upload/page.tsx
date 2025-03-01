@@ -18,9 +18,12 @@ export default function NewUpload() {
         ],
     });
 
-    useEffect(() => {
-        console.log("Metadata changed:", metadata);
-    }, [metadata]);
+    const [code, setCode] = useState("");
+
+    // useEffect(() => {
+    //     console.log("Metadata changed:", metadata);
+    //     console.log("Code changed:", code);
+    // }, [metadata, code]);
 
     const handleFieldChange = (field: "title" | "description" | "tags", value: string) => {
         setMetadata((prev) => ({...prev, [field]: value}))
@@ -31,7 +34,8 @@ export default function NewUpload() {
     };
 
     const handleSubmit = async () => {
-        // Use Next.js API routes or server actions
+        const submissionData = {...metadata, code};
+        // Next.js API routes or server actions
         const res = await fetch("/api/submitSnippet", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -46,6 +50,7 @@ export default function NewUpload() {
       };
     
       const handleRun = async () => {
+        const runData = {...metadata, code};
         // Run the snippet code, perhaps sending both metadata and code to an API endpoint
         const res = await fetch("/api/runSnippet", {
           method: "POST",
@@ -77,7 +82,7 @@ export default function NewUpload() {
                 </div>
                 {/*This part for code written */}
                 <div className="md:w-1/2">
-                    <CodeSection />
+                    <CodeSection code={code} onCodeChange={setCode}/>
                 </div>
             </div>
         </div>

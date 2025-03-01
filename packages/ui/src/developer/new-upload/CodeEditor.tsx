@@ -5,33 +5,44 @@ import { javascript } from "@codemirror/lang-javascript";
 import { darcula } from "@uiw/codemirror-theme-darcula";
 import prettier from "prettier";
 import { Text } from "lucide-react";
+import { python } from "@codemirror/lang-python";
 
-const supportedLanguages = ["JavaScript", "TypeScript"];
+const supportedLanguages = ["JavaScript", "TypeScript", "Python"];
 const languageMap = {
     "JavaScript": javascript(),
     "TypeScript": javascript({ typescript: true }),
+    "Python": python(),
 };
 const parserMap: { [key: string]: prettier.BuiltInParserName } = {
     "JavaScript": "babel",
     "TypeScript": "typescript",
 };
 
-export function CodeEditor() {
-    const [selectedLanguage, setSelectedLanguage] = useState<keyof typeof parserMap>("JavaScript");
-    const [code, setCode] = useState("");
+interface CodeEditorProps {
+    code: string;
+    onCodeChange: (code: string) => void;
+  }
 
+export function CodeEditor({ code, onCodeChange}:  CodeEditorProps) {
+
+    const [selectedLanguage, setSelectedLanguage] = useState<keyof typeof parserMap>("JavaScript");
+    
     const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedLanguage(e.target.value);
     };
 
-    const handleFormat = () => {
+    const handleFormat = async () => {
         const parser = parserMap[selectedLanguage];
-        prettier.format(code, { parser }).then((formattedCode) => {
-            setCode(formattedCode);
-        }).catch((error) => {
+        try {
+            const formattedCode = await prettier.format(code, {
+              parser,
+              plugins: [],
+            });
+            onCodeChange(formattedCode);
+          } catch (error) {
             console.error("Error formatting code:", error);
             alert("Failed to format code. Check syntax.");
-        });
+          }
 
     };
 
@@ -60,12 +71,20 @@ export function CodeEditor() {
                     </button>
                 </div>
             </div>
-            <CodeMirror
-                value={code}
-                extensions={[languageExtension, darcula]}
-                onChange={(value) => setCode(value)}
-                className="h-[calc(100%-60px)]"
-            />
+            <div className="h-full w-full border rounded">
+                <CodeMirror
+                    value={code}
+                    extensions={[languageExtension, darcula]}
+                    onChange={(value) => onCodeChange(value)}
+                    className="h-[calc(100%-60px)]"
+                    theme="dark"
+                    minHeight="520px"
+                    basicSetup={{
+                        highlightActiveLine: true,
+                        highlightActiveLineGutter: true,
+                    }}
+                />
+            </div>
 
         </div>
     );

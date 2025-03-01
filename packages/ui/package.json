@@ -21,7 +21,10 @@
     "typescript": "5.7.3"
   },
   "dependencies": {
+    "@codemirror/lang-cpp": "^6.0.2",
     "@codemirror/lang-javascript": "^6.2.3",
+    "@codemirror/lang-python": "^6.1.7",
+    "@codemirror/language": "^6.10.8",
     "@uiw/react-codemirror": "^4.23.9",
     "prettier": "^3.5.2",
     "react": "^19.0.0",
