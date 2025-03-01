@@ -4,9 +4,10 @@ import { MetadataSection } from "@repo/ui/developer/new-upload/MetadataSection";
 import { CodeSection } from "../../../../../packages/ui/src/developer/new-upload/CodeSection";
 import { NavBar } from "@repo/ui/developer/new-upload/NavBar";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 export default function NewUpload() {
-
+    const language_id = 63;
     const [metadata, setMetadata] = useState({
         title: "",
         description: "",
@@ -52,18 +53,14 @@ export default function NewUpload() {
       const handleRun = async () => {
         const runData = {...metadata, code};
         // Run the snippet code, perhaps sending both metadata and code to an API endpoint
-        const res = await fetch("/api/runSnippet", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(metadata),
-        });
-        // Handle response
-        if (res.ok) {
-          const result = await res.json();
-          alert("Run Successful: " + result.output);
-        } else {
-          alert("Run failed.");
-        }
+        const response = await axios.post("../api/runSnippet", {
+          code,
+          language_id,
+          stdin: metadata.testCases[0]?.input,
+          expected_output: metadata.testCases[0]?.expected
+        })
+
+        console.log(response.data?.status)
       };
 
     return (
