@@ -19,6 +19,8 @@ export default function NewUpload() {
         ],
     });
 
+    const [isCodeAccepted, setIsCodeAccepted] = useState(false);
+
     const [code, setCode] = useState("");
 
     // useEffect(() => {
@@ -36,17 +38,21 @@ export default function NewUpload() {
 
     const handleSubmit = async () => {
         const submissionData = {...metadata, code};
-        // Next.js API routes or server actions
-        const res = await fetch("/api/submitSnippet", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(metadata),
-        });
-        // Handle response
-        if (res.ok) {
-          alert("Snippet submitted!");
+
+        if(isCodeAccepted) {
+          const res = await fetch("/api/submitSnippet", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(metadata),
+          });
+          // Handle response
+          if (res.ok) {
+            alert("Snippet submitted!");
+          } else {
+            alert("Submission failed.");
+          }
         } else {
-          alert("Submission failed.");
+          alert("First run to verify test cases");
         }
       };
     
@@ -56,11 +62,16 @@ export default function NewUpload() {
         const response = await axios.post("../api/runSnippet", {
           code,
           language_id,
-          stdin: metadata.testCases[0]?.input,
-          expected_output: metadata.testCases[0]?.expected
+          stdin: metadata.testCases.map(testCase => testCase.input),
+          expected_output: metadata.testCases.map(testCase => testCase.expected)
         })
 
+        if(response.data?.status.description === "Accepted") {
+          setIsCodeAccepted(true);
+        }
+
         console.log(response.data?.status)
+        console.log(response.data)
       };
 
     return (
