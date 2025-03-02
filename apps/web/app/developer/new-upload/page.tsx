@@ -52,7 +52,7 @@ export default function NewUpload() {
             alert("Submission failed.");
           }
         } else {
-          alert("First run to verify test cases");
+          alert("Verify all test cases");
         }
       };
     
@@ -66,12 +66,12 @@ export default function NewUpload() {
           expected_output: metadata.testCases.map(testCase => testCase.expected)
         })
 
-        if(response.data?.status.description === "Accepted") {
-          setIsCodeAccepted(true);
-        }
+        const statuses = response.data.submissions.map((result: any) => result.status.description);
+        const allAccepted = statuses.every((status: string) => status === "Accepted");
+        setIsCodeAccepted(allAccepted);
 
-        console.log(response.data?.status)
         console.log(response.data)
+        console.log("statuses: ",statuses);
       };
 
     return (

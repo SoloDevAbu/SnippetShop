@@ -58,19 +58,31 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             (submission: SubmissionResponse) => submission.token
         );
 
-        // Fetch results for each token
-        const result: SubmissionResult[] = await Promise.all(
-            submissionTokens.map(async (token): Promise<SubmissionResult> => {
-                const resultUrl = `https://judge0-ce.p.rapidapi.com/submissions/${token}`;
-                const resultResponse = await axios.get(resultUrl, {
-                    headers: {
-                        'x-rapidapi-host': 'judge0-ce.p.rapidapi.com',
-                        'x-rapidapi-key': process.env.JUDGE0_API_KEY
-                    }
-                });
-                return resultResponse.data;
-            })
-        );
+        // // Fetch results for each token
+        // const result: SubmissionResult[] = await Promise.all(
+        //     submissionTokens.map(async (token): Promise<SubmissionResult> => {
+        //         const resultUrl = `https://judge0-ce.p.rapidapi.com/submissions/${token}`;
+        //         const resultResponse = await axios.get(resultUrl, {
+        //             headers: {
+        //                 'x-rapidapi-host': 'judge0-ce.p.rapidapi.com',
+        //                 'x-rapidapi-key': process.env.JUDGE0_API_KEY
+        //             }
+        //         });
+        //         return resultResponse.data;
+        //     })
+        // );
+
+        const tokenParam = submissionTokens.join(",");
+        const resultUrl = `https://judge0-ce.p.rapidapi.com/submissions/batch?tokens=${tokenParam}`
+
+        const resultResponse = await axios.get(resultUrl, {
+            headers: {
+                'x-rapidapi-host': 'judge0-ce.p.rapidapi.com',
+                'x-rapidapi-key': process.env.JUDGE0_API_KEY
+            }
+        });
+
+        const result: SubmissionResult = resultResponse.data;
 
         console.log(result);
         return NextResponse.json(result);
