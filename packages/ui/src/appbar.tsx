@@ -2,6 +2,7 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import { Button } from "./button";
 import { useRouter } from "next/navigation";
+import { Github } from "lucide-react"
 
 export const Appbar = () => {
   const { data: session } = useSession();
@@ -17,6 +18,11 @@ export const Appbar = () => {
         <a href="/about">Guidelines</a>
       </div>
       <div className="flex gap-2 justify-center">
+        <button 
+          onClick={() => router.push('https://github.com/SoloDevAbu/SnippetShop')}
+        className="text-white bg-gray-800 rounded-lg px-2">
+          <Github/>
+        </button>
         {session ? (
           <div className="flex gap-2 justify-center">
             <Button

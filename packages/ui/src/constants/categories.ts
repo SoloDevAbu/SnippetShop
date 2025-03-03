@@ -9,7 +9,7 @@ import swift from '../assets/swift.png';
 
 export const categories = [
     {id: 'js', title: 'JavaScript', image: js},
-    {id: 'ts', title: 'TypeScript', image: ts},
+    {id: 'typescript', title: 'TypeScript', image: ts},
     {id: 'cpp', title: 'C++', image: cpp},
     {id: 'java', title: 'Java', image: java},
     {id: 'c-sharp', title: 'C#', image: cSharp},
