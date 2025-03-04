@@ -37,20 +37,11 @@ export default function NewUpload() {
     };
 
     const handleSubmit = async () => {
-        const submissionData = {...metadata, code};
-
         if(isCodeAccepted) {
-          const res = await fetch("/api/submitSnippet", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(metadata),
-          });
-          // Handle response
-          if (res.ok) {
-            alert("Snippet submitted!");
-          } else {
-            alert("Submission failed.");
-          }
+          const response = await axios.post("http://localhost:5000/api/v1/submitSnippet",{
+            metadata
+          })
+          console.log(response)
         } else {
           alert("Verify all test cases");
         }

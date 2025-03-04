@@ -25,6 +25,7 @@
     "@codemirror/lang-javascript": "^6.2.3",
     "@codemirror/lang-python": "^6.1.7",
     "@codemirror/language": "^6.10.8",
+    "@uiw/codemirror-theme-darcula": "^4.23.10",
     "@uiw/react-codemirror": "^4.23.9",
     "prettier": "^3.5.2",
     "react": "^19.0.0",
