@@ -3,14 +3,18 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { Button } from "./button";
 import { useRouter } from "next/navigation";
 import { Github } from "lucide-react"
+import { CodeXml } from "lucide-react"
 
 export const Appbar = () => {
   const { data: session } = useSession();
   const router = useRouter();
   return (
-    <div className="fixed top-0 left-0 right-0 flex justify-between border-b px-4 py-4 items-center mx-4 rounded-md shadow-sm shadow-gray-500 mt-2 bg-white z-50">
-      <div className="text-lg flex flex-col justify-center">
-        SnippetShop
+    <div className="fixed top-0 left-0 right-0 flex justify-between border-b px-4 py-4 items-center mx-4 rounded-md shadow-sm shadow-gray-500 mt-2 z-50">
+      <div className="text-lg flex gap-2  justify-center items-center font-bold font ">
+        <div className="bg-gray-800 rounded-full p-2">
+          <CodeXml />
+        </div>
+        <h1 className="text-xl font-bold">SnippetShop</h1>
       </div>
       <div className="flex gap-4">
         <a href="/about">About</a>
@@ -18,10 +22,10 @@ export const Appbar = () => {
         <a href="/about">Guidelines</a>
       </div>
       <div className="flex gap-2 justify-center">
-        <button 
+        <button
           onClick={() => router.push('https://github.com/SoloDevAbu/SnippetShop')}
-        className="text-white bg-gray-800 rounded-lg px-2">
-          <Github/>
+          className="text-white bg-gray-800 rounded-lg px-2">
+          <Github />
         </button>
         {session ? (
           <div className="flex gap-2 justify-center">

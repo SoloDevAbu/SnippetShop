@@ -17,7 +17,7 @@ export const Topbar = ({title}: {
                     <button className="flex gap-2 bg-green-600 rounded-md px-2 py-1">{<Plus/>}Add New</button>
                 </div>
                 <div>
-                    <button className="bg-gray-700 rounded-full p-1.5"><BellRing/></button>
+                    <button className="bg-gray-700 rounded-full p-1.5 shadow-sm shadow-gray-200"><BellRing/></button>
                 </div>
                 <div className="flex items-center">
                     <button className=" rounded-full border border-lime-600 "><CircleUser size={32}/></button>

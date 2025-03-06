@@ -1,6 +1,7 @@
 import BarChart from "@repo/ui/developer/dashboard/barchart";
 import DoughnutChart from "@repo/ui/developer/dashboard/doughnutchart";
 import { StatusCard } from "@repo/ui/developer/dashboard/StatusCard";
+import { TopSells } from "@repo/ui/developer/dashboard/topsells";
 
 export default function DashboardPage() {
     return (
@@ -18,6 +19,10 @@ export default function DashboardPage() {
                 <div className="w-2/3 bg-zinc-900 rounded-lg p-2">
                     <BarChart />
                 </div>
+            </div>
+
+            <div>
+                <TopSells />
             </div>
         </div>
     );

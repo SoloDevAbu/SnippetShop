@@ -12,12 +12,12 @@ export const SidebarItem = ({ href, title, icon }: {
     const selected = pathname === href;
 
     return (
-        <div className={`flex items-start gap-2 cursor-pointer px-2 py-1 rounded-md hover:bg-gray-100 ${selected && "bg-gray-200 shadow-sm shadow-gray-500"} font-semibold`} onClick={() => router.push(href)}>
+        <div className={`flex items-start gap-2 cursor-pointer px-2 py-2 rounded-md hover:bg-zinc-900 ${selected && "bg-gradient-to-b from-zinc-800 to-zinc-900 shadow-sm"} font-semibold`} onClick={() => router.push(href)}>
             <div className="pr-2">
-                {icon}
+            {icon}
             </div>
-            <div className={`font-bold ${selected ? "text-[#6a51a6]" : "text-slate-500"}`}>
-                {title}
+            <div className={`font-bold ${selected ? "text-[#ebebeb]" : "text-[#b9b9b9]"}`}>
+            {title}
             </div>
         </div>
     )
