@@ -19,10 +19,10 @@ export function MetadataSection({
     onTestCasesChange: (testCases: { title: string; input: string; expected: string }[]) => void;
 }): JSX.Element {
     return (
-        <div className="flex flex-col gap-4 border border-gray-300 rounded p-4">
+        <div className="flex flex-col gap-4 border border-gray-800 rounded p-4">
             {/*Title */}
             <div>
-                <h1 className="font-bold text-gray-600">Title<span className="text-red-500">*</span></h1>
+                <h1 className="font-bold text-gray-300">Title<span className="text-red-500">*</span></h1>
                 <InputBox
                     title="Code Snippet title"
                     value={metadata.title}
@@ -31,7 +31,7 @@ export function MetadataSection({
             </div>
             {/*Description */}
             <div>
-                <h1 className="font-bold text-gray-600">Description<span className="text-red-500">*</span></h1>
+                <h1 className="font-bold text-gray-300">Description<span className="text-red-500">*</span></h1>
                 <InputBox
                     title="Description of Code Snippet"
                     value={metadata.description}
@@ -40,7 +40,7 @@ export function MetadataSection({
             </div>
             {/*Tags */}
             <div>
-                <h1 className="font-bold text-gray-600">Tags<span className="text-red-500">*</span></h1>
+                <h1 className="font-bold text-gray-300">Tags<span className="text-red-500">*</span></h1>
                 <InputBox
                     title="Tags (comma seperated)"
                     value={metadata.tags}

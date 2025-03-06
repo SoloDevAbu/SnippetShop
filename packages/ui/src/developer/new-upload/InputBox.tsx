@@ -8,7 +8,7 @@ export function InputBox({
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
     return (
-        <div className="border border-gray-300 rounded-md p-2 mx-3 my-2">
+        <div className="border border-gray-700 rounded-md p-2 mx-3 my-2">
             <input
                 type="text"
                 placeholder={title}

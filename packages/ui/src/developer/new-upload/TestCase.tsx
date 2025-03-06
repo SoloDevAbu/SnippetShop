@@ -16,7 +16,7 @@ export function TestCase({
 }): JSX.Element {
     return (
         <div className="shadow-sm shadow-rose-300 rounded-lg py-4 px-2">
-            <h1 className="font-semibold text-gray-700">{title}</h1>
+            <h1 className="font-semibold text-gray-300">{title}</h1>
             <InputBox
                 title="Input"
                 value={inputValue}

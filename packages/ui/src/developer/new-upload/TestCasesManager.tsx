@@ -36,8 +36,8 @@ export function TestCasesManager({
 
     return (
         <div>
-            <div className="flex gap-1 items-center">
-                <h1 className="font-bold text-gray-600">Test Cases<span className="text-red-500">*</span></h1>
+            <div className="flex gap-1 items-center pb-2">
+                <h1 className="font-bold text-gray-300">Test Cases<span className="text-red-400">*</span></h1>
                 <p className="text-sm text-gray-400">(Minimum 3 test cases needed)</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -56,7 +56,7 @@ export function CodeEditor({ code, onCodeChange}:  CodeEditorProps) {
                     <select
                         value={selectedLanguage}
                         onChange={handleLanguageChange}
-                        className="p-2 border rounded"
+                        className="p-2 border border-gray-700 rounded"
                     >
                         {supportedLanguages.map((lang) => (
                             <option key={lang} value={lang}>
@@ -71,7 +71,7 @@ export function CodeEditor({ code, onCodeChange}:  CodeEditorProps) {
                     </button>
                 </div>
             </div>
-            <div className="h-full w-full border rounded">
+            <div className="h-full w-full">
                 <CodeMirror
                     value={code}
                     extensions={[languageExtension, darcula]}

@@ -4,7 +4,7 @@ import { categories } from '../constants/categories'
 
 export const Hero = () => {
     return (
-        <div className='flex flex-col items-center justify-center gap-4'>
+        <div className='text-gray-300 flex flex-col items-center justify-center gap-4'>
             <div className="flex flex-col items-center justify-center gap-3">
                 <div className="text-6xl font-bold">SnippetShop</div>
                 <div className="text-2xl">Buy premium code snippets</div>
