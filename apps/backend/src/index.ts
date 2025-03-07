@@ -10,8 +10,8 @@ app.use(cors());
 const PORT = process.env.PORT || 5000;
 
 app.post("/api/v1/submitSnippet", async (req, res) => {
-    const {metadata} = req.body;
-    console.log(metadata)
+    const {metadata, tags} = req.body;
+    console.log(metadata, tags)
 
     try {
         const existingSnippet = await db.codeSnippet.findFirst({
@@ -39,12 +39,25 @@ app.post("/api/v1/submitSnippet", async (req, res) => {
                         expected_output: tc.expected
                     }))
                 }: undefined,
-
-                // code_snippet_tags: metadata.tags ? {
-                //     create: metadata.tags
-                // }: undefined
             }
         })
+
+        if (tags && tags.length > 0) {
+            for (const tagName of tags) {
+                let tag = await db.tag.findFirst({ where: { name: tagName } });
+
+                if (!tag) {
+                    tag = await db.tag.create({ data: { name: tagName } });
+                }
+
+                await db.codeSnippetTag.create({
+                    data: {
+                        code_snippet_id: snippet.id,
+                        tag_id: tag.id
+                    }
+                });
+            }
+        }
 
         res.json(snippet);
     } catch (error) {

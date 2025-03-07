@@ -14,11 +14,11 @@ export const TopSells = () => {
                 </div>
             </div>
             <div className="mt-6  bg-zinc-800 px-4 rounded-lg pb-4">
-                <div className="flex bg-zinc-800 py-1.5 px-4 rounded-md text-gray-400 font-semibold">
-                    <div className="flex gap-1.5 items-center w-2/3">
+                <div className="flex bg-zinc-800 py-1.5 px-4 rounded-md text-gray-400 font-semibold text-sm md:text-base">
+                    <div className="w-1/2 md:w-2/3">
                         <h3 >Title</h3>
                     </div>
-                    <div className="flex justify-between items-center gap-16 w-1/3">
+                    <div className="flex justify-between items-center gap-4 md:gap-16 w-1/2 md:w-1/3">
                         <h3>Sells</h3>
                         <h3>Language</h3>
                         <h3>Actions</h3>

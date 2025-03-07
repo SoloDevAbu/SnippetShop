@@ -24,12 +24,11 @@ model User {
   name          String?
   role          Role
   provider      String
-  provider_id   Int?        @unique
+  provider_id   Int?          @unique
   created_at    DateTime      @default(now())
-  code_snippets CodeSnippet[] 
-  purchases     Purchase[] 
+  code_snippets CodeSnippet[]
+  purchases     Purchase[]
 }
-
 
 model Language {
   id            String        @id @default(cuid())
@@ -39,25 +38,34 @@ model Language {
 }
 
 model Tag {
-  id                String           @id @default(cuid())
-  name              String           @unique
-  code_snippet_tags CodeSnippetTag[]
+  id            String           @id @default(cuid())
+  name          String           @unique
+  code_snippets CodeSnippetTag[]
+}
+
+model CodeSnippetTag {
+  code_snippet_id String
+  tag_id          String
+  code_snippet    CodeSnippet @relation(fields: [code_snippet_id], references: [id])
+  tag             Tag         @relation(fields: [tag_id], references: [id])
+
+  @@id([code_snippet_id, tag_id])
 }
 
 model CodeSnippet {
-  id                String           @id @default(cuid())
-  title             String
-  description       String
-  language_id       String?
-  developer_id      String?
-  created_at        DateTime         @default(now())
-  updated_at        DateTime         @updatedAt
-  status            Status           @default(PENDING)
-  test_cases        TestCase[]
-  code_snippet_tags CodeSnippetTag[]
-  purchases         Purchase[]
-  language          Language?         @relation(fields: [language_id], references: [id])
-  developer         User?             @relation(fields: [developer_id], references: [id])
+  id           String           @id @default(cuid())
+  title        String
+  description  String
+  language_id  String?
+  developer_id String?
+  created_at   DateTime         @default(now())
+  updated_at   DateTime         @updatedAt
+  status       Status           @default(PENDING)
+  test_cases   TestCase[]
+  tags         CodeSnippetTag[]
+  purchases    Purchase[]
+  language     Language?        @relation(fields: [language_id], references: [id])
+  developer    User?            @relation(fields: [developer_id], references: [id])
 }
 
 model TestCase {
@@ -67,14 +75,6 @@ model TestCase {
   expected_output String
   created_at      DateTime    @default(now())
   code_snippet    CodeSnippet @relation(fields: [code_snippet_id], references: [id])
-}
-
-model CodeSnippetTag {
-  code_snippet_id String
-  tag_id          String
-  code_snippet    CodeSnippet @relation(fields: [code_snippet_id], references: [id])
-  tag             Tag         @relation(fields: [tag_id], references: [id])
-  @@id([code_snippet_id, tag_id])
 }
 
 model Purchase {

@@ -9,7 +9,7 @@ export const Appbar = () => {
   const { data: session } = useSession();
   const router = useRouter();
   return (
-    <div className="text-gray-300 fixed top-0 left-0 right-0 flex justify-between border-b px-4 py-4 items-center mx-4 rounded-md shadow-sm shadow-gray-500 mt-2 z-50">
+    <div className="text-gray-300 fixed top-0 left-0 right-0 flex justify-between border-b px-4 py-4 items-center mx-4 rounded-md shadow-sm shadow-gray-500 mt-2 z-50 bg-gray-900">
       <div className="text-lg flex gap-2  justify-center items-center font-bold font ">
         <div className="bg-gray-800 rounded-full p-2">
           <CodeXml />
