@@ -4,7 +4,7 @@ import { MetadataProvider, useMetadata } from "@repo/ui/developer/new-upload/Met
 import { MetadataSection } from "@repo/ui/developer/new-upload/MetadataSection";
 import { CodeSection } from "../../../../../packages/ui/src/developer/new-upload/CodeSection";
 import { NavBar } from "@repo/ui/developer/new-upload/NavBar";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { getLanguageId, SupportedLanguage } from "@repo/constants/languages";
 
