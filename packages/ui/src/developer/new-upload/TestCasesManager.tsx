@@ -1,27 +1,20 @@
-"use client"
-
-import { useState } from "react";
 import { TestCase } from "./TestCase";
 import { AddTestCase } from "./AddTestCase";
+import { useMetadata } from "./MetadataContext";
 
-export function TestCasesManager({
-    initialTestCases,
-    onChange
-}: {
-    initialTestCases: { title: string; input: string; expected: string }[];
-    onChange?: (cases: { title: string; input: string; expected: string }[]) => void;
-}) {
-    const [testCases, setTestCases] = useState(initialTestCases);
+export function TestCasesManager() {
+    const { metadata, setMetadata } = useMetadata();
 
     const addTestCase = () => {
         const newTestCase = {
-            title: `Test${testCases.length + 1}`,
+            title: `Test ${metadata.testCases.length + 1}`,
             input: "",
             expected: "",
         };
-        const update = [...testCases, newTestCase];
-        setTestCases(update);
-        onChange?.(update);
+        setMetadata((prev) => ({
+            ...prev,
+            testCases: [...prev.testCases, newTestCase]
+        }));
     };
 
     const updateTestCase = (
@@ -29,9 +22,12 @@ export function TestCasesManager({
         field: "input" | "expected",
         value: string
     ) => {
-        const update = testCases.map((testCase, i) => i === index ? { ...testCase, [field]: value } : testCase);
-        setTestCases(update);
-        onChange?.(update);
+        setMetadata((prev) => ({
+            ...prev,
+            testCases: prev.testCases.map((testCase, i) =>
+                i === index ? { ...testCase, [field]: value } : testCase
+            )
+        }))
     }
 
     return (
@@ -41,7 +37,7 @@ export function TestCasesManager({
                 <p className="text-sm text-gray-400">(Minimum 3 test cases needed)</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {testCases.map((testCase, index) => (
+                {metadata.testCases.map((testCase, index) => (
                     <TestCase
                         key={index}
                         title={testCase.title}

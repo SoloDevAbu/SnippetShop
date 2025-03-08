@@ -1,5 +1,6 @@
 "use client"
 
+import { MetadataProvider, useMetadata } from "@repo/ui/developer/new-upload/MetadataContext"
 import { MetadataSection } from "@repo/ui/developer/new-upload/MetadataSection";
 import { CodeSection } from "../../../../../packages/ui/src/developer/new-upload/CodeSection";
 import { NavBar } from "@repo/ui/developer/new-upload/NavBar";
@@ -8,34 +9,12 @@ import axios from "axios";
 
 export default function NewUpload() {
   const language_id = 63;
-  const [metadata, setMetadata] = useState({
-    title: "",
-    description: "",
-    tags: "",
-    testCases: [
-      { title: "Test1", input: "", expected: "" },
-      { title: "Test2", input: "", expected: "" },
-      { title: "Test3", input: "", expected: "" },
-    ],
-  });
+  const { metadata } = useMetadata();
 
   const [isCodeAccepted, setIsCodeAccepted] = useState(false);
 
   const [code, setCode] = useState("");
-
-  // useEffect(() => {
-  //     console.log("Metadata changed:", metadata);
-  //     console.log("Code changed:", code);
-  // }, [metadata, code]);
-
-  const handleFieldChange = (field: "title" | "description" | "tags", value: string) => {
-    setMetadata((prev) => ({ ...prev, [field]: value }))
-  };
-
-  const handleTestCasesChange = (testCases: typeof metadata.testCases) => {
-    setMetadata((prev) => ({ ...prev, testCases }))
-  };
-
+  
   const handleSubmit = async () => {
     const tags = metadata.tags.split(",").map(tag => tag.trim());
     if (isCodeAccepted) {
@@ -50,8 +29,6 @@ export default function NewUpload() {
   };
 
   const handleRun = async () => {
-    const runData = { ...metadata, code };
-    // Run the snippet code, perhaps sending both metadata and code to an API endpoint
     const response = await axios.post("../api/runSnippet", {
       code,
       language_id,
@@ -68,24 +45,22 @@ export default function NewUpload() {
   };
 
   return (
-    <div className="w-full">
-      <div className="">
-        <NavBar onSubmit={handleSubmit} onRun={handleRun} />
-      </div>
-      <div className="w-full flex flex-col md:flex-row gap-8">
-        {/*This is for metadata */}
-        <div className="md:w-1/2">
-          <MetadataSection
-            metadata={metadata}
-            onFiledChange={handleFieldChange}
-            onTestCasesChange={handleTestCasesChange}
-          />
+    <MetadataProvider>
+      <div className="w-full">
+        <div className="">
+          <NavBar onSubmit={handleSubmit} onRun={handleRun} />
         </div>
-        {/*This part for code written */}
-        <div className="md:w-1/2">
-          <CodeSection code={code} onCodeChange={setCode} />
+        <div className="w-full flex flex-col md:flex-row gap-8">
+          {/*This is for metadata */}
+          <div className="md:w-1/2">
+            <MetadataSection />
+          </div>
+          {/*This part for code written */}
+          <div className="md:w-1/2">
+            <CodeSection code={code} onCodeChange={setCode} />
+          </div>
         </div>
       </div>
-    </div>
+    </MetadataProvider>
   )
 }

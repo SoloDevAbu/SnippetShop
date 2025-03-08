@@ -1,23 +1,14 @@
-import { JSX } from "react/jsx-runtime";
 import { InputBox } from "./InputBox";
 import { TestCasesManager } from "./TestCasesManager";
+import { useMetadata } from "./MetadataContext";
 
-export function MetadataSection({
-    metadata,
-    onFiledChange,
-    onTestCasesChange,
-}: {
-    metadata: {
-        title: string;
-        description: string;
-        tags: string;
-        testCases: {
-            title: string; input: string; expected: string
-        }[];
-    };
-    onFiledChange: (field: "title" | "description" | "tags", value: string) => void;
-    onTestCasesChange: (testCases: { title: string; input: string; expected: string }[]) => void;
-}): JSX.Element {
+export function MetadataSection() {
+
+    const { metadata, setMetadata } = useMetadata();
+
+    const handleFieldChange = (filed: "title" | "description" | "tags", value: string) => {
+        setMetadata((prev) => ({ ...prev, [filed]: value }))
+    }
     return (
         <div className="flex flex-col gap-4 border border-gray-800 rounded p-4">
             {/*Title */}
@@ -26,7 +17,7 @@ export function MetadataSection({
                 <InputBox
                     title="Code Snippet title"
                     value={metadata.title}
-                    onChange={(e) => onFiledChange("title", e.target.value)}
+                    onChange={(e) => handleFieldChange("title", e.target.value)}
                 />
             </div>
             {/*Description */}
@@ -35,7 +26,7 @@ export function MetadataSection({
                 <InputBox
                     title="Description of Code Snippet"
                     value={metadata.description}
-                    onChange={(e) => onFiledChange("description", e.target.value)}
+                    onChange={(e) => handleFieldChange("description", e.target.value)}
                 />
             </div>
             {/*Tags */}
@@ -44,14 +35,11 @@ export function MetadataSection({
                 <InputBox
                     title="Tags (comma seperated)"
                     value={metadata.tags}
-                    onChange={(e) => onFiledChange("tags", e.target.value)}
+                    onChange={(e) => handleFieldChange("tags", e.target.value)}
                 />
             </div>
             {/*Test Cases */}
-            <TestCasesManager
-                initialTestCases={metadata.testCases}
-                onChange={onTestCasesChange}
-            />
+            <TestCasesManager />
         </div>
     )
 }
