@@ -10,8 +10,8 @@ app.use(cors());
 const PORT = process.env.PORT || 5000;
 
 app.post("/api/v1/submitSnippet", async (req, res) => {
-    const {metadata, tags} = req.body;
-    console.log(metadata, tags)
+    const {metadata, tags, languageId} = req.body;
+    console.log(metadata, tags, languageId)
 
     try {
         const existingSnippet = await db.codeSnippet.findFirst({
@@ -31,6 +31,7 @@ app.post("/api/v1/submitSnippet", async (req, res) => {
             data: {
                 title: metadata.title,
                 description: metadata.description,
+                language_id: languageId,
                 test_cases: metadata.testCases ? {
                     create: metadata.testCases.map((tc: {
                         input: string; expected: string

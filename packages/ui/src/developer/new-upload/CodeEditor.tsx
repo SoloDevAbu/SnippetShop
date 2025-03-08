@@ -6,36 +6,35 @@ import { darcula } from "@uiw/codemirror-theme-darcula";
 import prettier from "prettier";
 import { Text } from "lucide-react";
 import { python } from "@codemirror/lang-python";
+import { LANGUAGE_MAP, SupportedLanguage } from "@repo/constants/languages"
 
-const supportedLanguages = ["JavaScript", "TypeScript", "Python"];
-const languageMap = {
-    "JavaScript": javascript(),
-    "TypeScript": javascript({ typescript: true }),
-    "Python": python(),
-};
-const parserMap: { [key: string]: prettier.BuiltInParserName } = {
-    "JavaScript": "babel",
-    "TypeScript": "typescript",
+const languageExtensions = {
+    JavaScript: javascript(),
+    TypeScript: javascript({ typescript: true }),
+    Python: python(),
 };
 
 interface CodeEditorProps {
     code: string;
     onCodeChange: (code: string) => void;
+    onLanguageChange: (language: SupportedLanguage) => void;
   }
 
-export function CodeEditor({ code, onCodeChange}:  CodeEditorProps) {
+export function CodeEditor({ code, onCodeChange, onLanguageChange}:  CodeEditorProps) {
 
-    const [selectedLanguage, setSelectedLanguage] = useState<keyof typeof parserMap>("JavaScript");
+    const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage>("JavaScript");
     
     const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedLanguage(e.target.value);
+        const newLanguage = e.target.value as SupportedLanguage;
+        setSelectedLanguage(newLanguage);
+        onLanguageChange(newLanguage)
     };
 
     const handleFormat = async () => {
-        const parser = parserMap[selectedLanguage];
+       
         try {
             const formattedCode = await prettier.format(code, {
-              parser,
+              parser: selectedLanguage === "Python" ? 'python' : 'babel',
               plugins: [],
             });
             onCodeChange(formattedCode);
@@ -45,8 +44,6 @@ export function CodeEditor({ code, onCodeChange}:  CodeEditorProps) {
           }
 
     };
-
-    const languageExtension = languageMap[selectedLanguage as keyof typeof languageMap];
 
     return (
         <div className="h-full w-full">
@@ -58,7 +55,7 @@ export function CodeEditor({ code, onCodeChange}:  CodeEditorProps) {
                         onChange={handleLanguageChange}
                         className="p-2 border border-gray-700 rounded"
                     >
-                        {supportedLanguages.map((lang) => (
+                        {Object.keys(LANGUAGE_MAP).map((lang) => (
                             <option key={lang} value={lang}>
                                 {lang}
                             </option>
@@ -74,8 +71,8 @@ export function CodeEditor({ code, onCodeChange}:  CodeEditorProps) {
             <div className="h-full w-full">
                 <CodeMirror
                     value={code}
-                    extensions={[languageExtension, darcula]}
-                    onChange={(value) => onCodeChange(value)}
+                    extensions={[languageExtensions[selectedLanguage], darcula]}
+                    onChange={onCodeChange}
                     className="h-[calc(100%-60px)]"
                     theme="dark"
                     minHeight="520px"
