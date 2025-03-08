@@ -6,6 +6,7 @@ import { FileCode } from "lucide-react";
 import { FileUp } from "lucide-react";
 import { Topbar } from "@repo/ui/developer/dashboard/topbar";
 import { SidebarTop } from "@repo/ui/developer/dashboard/sidebarTop";
+import { MetadataProvider } from "@repo/ui/developer/new-upload/MetadataContext";
 
 export default function Layout({
   children
@@ -28,7 +29,9 @@ export default function Layout({
       <main className="flex flex-col flex-grow">
         <Topbar title="Dashboard" />
         <div className="flex-grow">
-          {children}
+          <MetadataProvider>
+            {children}
+          </MetadataProvider>
         </div>
       </main>
     </div>

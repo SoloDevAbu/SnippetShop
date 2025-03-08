@@ -21,7 +21,7 @@ export default function NewUpload() {
     
     if (isCodeAccepted) {
       console.log("Submission data", metadata, tags, selectedLanguage, languageId)
-      const response = await axios.post("http://localhost:5000/api/v1/submitSnippet", {
+      const response = await axios.post("http://localhost:5000/api/v1/developer/submitSnippet", {
         metadata,
         tags,
         language_id: languageId,
