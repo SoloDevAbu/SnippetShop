@@ -14,20 +14,76 @@ export const authOptions = {
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
         })
     ],
+    session: {
+        strategy: 'jwt',
+        encryption: false
+    },
+
     callbacks: {
-        async jwt({ token, user }) {
-            // When the user signs in, add extra properties to the token
-            if (user) {
-                token.id = user.id;     // Add userId
-                token.role = user.role; // Add user role
+
+        async jwt({ token, account, profile }: { token: any; account: Account; profile: Profile }) {
+            try {
+                if (account?.provider && profile) {
+                    // For new sign-ins, check if user exists in database
+                    const user = await db.user.findFirst({
+                        where: {
+                            OR: [
+                                {
+                                    provider: account.provider.toUpperCase(),
+                                    provider_id: profile.sub
+                                },
+                                {
+                                    email: profile.email
+                                }
+                            ]
+                        },
+                        select: {
+                            id: true,
+                            role: true,
+                            provider: true,
+                            provider_id: true,
+                            email: true
+                        }
+                    });
+
+                    console.log("Database user found:", user);
+
+                    if (user) {
+                        // Return token with database user information
+                        return {
+                            ...token,
+                            dbUserId: user.id.toString(),
+                            role: user.role,
+                            provider: user.provider,
+                            provider_id: user.provider_id
+                        };
+                    }
+                }
+                // Return unchanged token if no user found or no account/profile
+                return token;
+            } catch (error) {
+                console.error("JWT callback error:", error);
+                return token;
             }
-            return token;
         },
-        async session({ session, token }) {
-            // Attach token properties to session for client-side access
-            session.user.id = token.id;
-            session.user.role = token.role;
-            return session;
+
+        async session({ session, token }: { session: any; token: any }) {
+            try {
+                console.log("Session callback token:", token);
+                
+                return {
+                    ...session,
+                    user: {
+                        ...session.user,
+                        id: token.dbUserId, // Use the database ID
+                        role: token.role,
+                        provider: token.provider
+                    }
+                };
+            } catch (error) {
+                console.error("Session callback error:", error);
+                return session;
+            }
         },
         async signIn({ account, profile }:
             {
@@ -41,7 +97,7 @@ export const authOptions = {
 
                     if (!githubProfile.id) return false;
                     const existingUser = await db.user.findUnique({
-                        where: { provider_id: githubProfile.id }
+                        where: { provider_provider_id: { provider: 'GITHUB', provider_id: githubProfile.id.toString() } }
                     });
 
                     if (!existingUser) {
@@ -51,7 +107,7 @@ export const authOptions = {
                                 name: githubProfile.name,
                                 role: 'DEVELOPER',
                                 provider: 'GITHUB',
-                                provider_id: githubProfile.id,
+                                provider_id: githubProfile.id.toString(),
                             }
                         });
                     }
@@ -73,6 +129,7 @@ export const authOptions = {
                                 name: googleProfile.name,
                                 role: 'USER',
                                 provider: 'GOOGLE',
+                                provider_id: googleProfile.email,
                             }
                         });
                     }
@@ -85,5 +142,5 @@ export const authOptions = {
             }
         },
     },
-    secret: process.env.NEXTAUTH_SECRET || "myjwtsecretofabcbitfortestandjus"
+    secret: process.env.NEXTAUTH_SECRET || "ns4yyeTQHzH5lB7wlBdoKP7wnqdxyuoz"
 };

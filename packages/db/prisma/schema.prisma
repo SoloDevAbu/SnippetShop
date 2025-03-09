@@ -24,10 +24,11 @@ model User {
   name          String?
   role          Role
   provider      String
-  provider_id   Int?          @unique
+  provider_id   String        
   created_at    DateTime      @default(now())
   code_snippets CodeSnippet[]
   purchases     Purchase[]
+  @@unique([provider, provider_id])
 }
 
 model Language {
