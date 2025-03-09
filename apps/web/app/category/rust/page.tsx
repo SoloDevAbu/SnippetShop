@@ -1,7 +1,19 @@
+import { SnippetCard } from "@repo/ui/category/snippet-card";
+import { rustLogo } from "../../../../../packages/ui/src/constants/categories";
+
 export default function CategoryRust() {
     return (
-        <div>
-            Hi From CategoryRust
-        </div>
-    )
+            <div className="m-4 ">
+                <div className="flex justify-center items-center mb-4">
+                    <img src={rustLogo.src} alt="Rust" className="size-24 rounded-full" />
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <SnippetCard />
+                    <SnippetCard />
+                    <SnippetCard />
+                    <SnippetCard />
+                    <SnippetCard />
+                </div>
+            </div>
+        )
 }

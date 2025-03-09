@@ -3,10 +3,10 @@ import { editSnippet, getAllSnippets, getSnippet, newSnippet, totalSnippetCount 
 import { AuthMiddleware } from "../../middleware/authMiddleware";
 const router: Router = express.Router();
 
-router.post("/submitSnippet", newSnippet);
-router.get("/all-snippets", getAllSnippets);
-router.get("/snippet/:snippetId", getSnippet);
-router.post("/update/:snippetId", editSnippet);
+router.post("/submitSnippet",AuthMiddleware, newSnippet);
+router.get("/all-snippets",AuthMiddleware, getAllSnippets);
+router.get("/snippet/:snippetId",AuthMiddleware, getSnippet);
+router.post("/update/:snippetId",AuthMiddleware, editSnippet);
 router.get("/snippetCount", AuthMiddleware, totalSnippetCount);
 
 export default router;

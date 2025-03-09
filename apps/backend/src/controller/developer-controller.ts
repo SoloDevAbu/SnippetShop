@@ -2,8 +2,9 @@ import { Request, Response } from "express";
 import db from "@repo/db/client"
 
 export const newSnippet = async (req: Request, res: Response) => {
-    
+    const userId = req.user?.userId
     try {
+
         const { metadata, tags, languageId } = req.body;
         console.log(metadata, tags, languageId)
 
@@ -12,7 +13,8 @@ export const newSnippet = async (req: Request, res: Response) => {
         }
         const existingSnippet = await db.codeSnippet.findFirst({
             where: {
-                title: metadata.title
+                title: metadata.title,
+                developer_id: userId
             }
         });
 
@@ -28,6 +30,7 @@ export const newSnippet = async (req: Request, res: Response) => {
                 title: metadata.title,
                 description: metadata.description,
                 language_id: languageId,
+                developer_id: userId,
                 test_cases: metadata.testCases ? {
                     create: metadata.testCases.map((tc: {
                         input: string; expected: string
@@ -191,8 +194,13 @@ export const editSnippet = async (req: Request, res: Response) => {
 }
 
 export const totalSnippetCount = async (req: Request, res: Response): Promise<any> => {
+    const userId  = req.user?.userId
     try {
-        const count = await db.codeSnippet.count();
+        const count = await db.codeSnippet.count({
+            where: {
+                developer_id: userId
+            }
+        });
         return res.json({ success: true, count });
     } catch (error) {
         return res.status(500).json({

@@ -17,3 +17,12 @@ export const categories = [
     {id: 'rust', title: 'Rust', image: rust},
     {id: 'swift', title: 'Swift', image: swift},
 ]
+
+export const jsLogo = js;
+export const tsLogo = ts; 
+export const cppLogo = cpp; 
+export const javaLogo = java; 
+export const cSharpLogo = cSharp; 
+export const pythonLogo = python; 
+export const rustLogo = rust; 
+export const swiftLogo = swift; 
