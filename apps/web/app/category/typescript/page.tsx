@@ -8,11 +8,11 @@ export default function CategoryTs() {
                     <img src={tsLogo.src} alt="TypeScript" className="size-24 rounded-full" />
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    <SnippetCard />
-                    <SnippetCard />
-                    <SnippetCard />
-                    <SnippetCard />
-                    <SnippetCard />
+                    <SnippetCard language="Ts"/>
+                    <SnippetCard language="Ts"/>
+                    <SnippetCard language="Ts"/>
+                    <SnippetCard language="Ts"/>
+                    <SnippetCard language="Ts"/>
                 </div>
             </div>
         )

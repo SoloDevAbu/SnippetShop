@@ -1,10 +1,10 @@
 "use client"
 
-import { MetadataProvider, useMetadata } from "@repo/ui/developer/new-upload/MetadataContext"
+import { useMetadata } from "@repo/ui/developer/new-upload/MetadataContext"
 import { MetadataSection } from "@repo/ui/developer/new-upload/MetadataSection";
 import { CodeSection } from "../../../../../packages/ui/src/developer/new-upload/CodeSection";
 import { NavBar } from "@repo/ui/developer/new-upload/NavBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { getLanguageId, SupportedLanguage } from "@repo/constants/languages";
 
@@ -20,11 +20,12 @@ export default function NewUpload() {
 
     
     if (isCodeAccepted) {
-      console.log("Submission data", metadata, tags, selectedLanguage, languageId)
       const response = await axios.post("http://localhost:5000/api/v1/developer/submitSnippet", {
         metadata,
         tags,
-        language_id: languageId,
+        languageId,
+      }, {
+        withCredentials: true
       });
       console.log(response);
     } else {
@@ -33,6 +34,7 @@ export default function NewUpload() {
   };
 
   const handleRun = async () => {
+    console.log(metadata)
     const response = await axios.post("../api/runSnippet", {
       code,
       language_id: getLanguageId(selectedLanguage),
@@ -49,7 +51,6 @@ export default function NewUpload() {
   };
 
   return (
-    <MetadataProvider>
       <div className="w-full">
         <div className="">
           <NavBar onSubmit={handleSubmit} onRun={handleRun} />
@@ -65,6 +66,5 @@ export default function NewUpload() {
           </div>
         </div>
       </div>
-    </MetadataProvider>
   )
 }

@@ -32,6 +32,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         const { code, language_id, stdin, expected_output }: RequestBody = await req.json();
         const batchUrl = 'https://judge0-ce.p.rapidapi.com/submissions/batch';
 
+        if(!code) {
+            return NextResponse.json({
+                message: "No Code present"
+            })
+        }
+
         // Create a submission for each test case
         const submissions = stdin.map((input, index) => ({
             source_code: code,
@@ -39,6 +45,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             stdin: input,
             expected_output: expected_output[index]
         }));
+        console.log(submissions)
 
         // Submit all test cases at once
         const submissionsResponse = await axios.post(batchUrl, {

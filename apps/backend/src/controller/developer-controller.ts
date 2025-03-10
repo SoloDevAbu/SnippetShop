@@ -1,16 +1,33 @@
 import { Request, Response } from "express";
 import db from "@repo/db/client"
+import { getLanguageById} from "@repo/constants/languages"
 
 export const newSnippet = async (req: Request, res: Response) => {
     const userId = req.user?.userId
     try {
-
         const { metadata, tags, languageId } = req.body;
-        console.log(metadata, tags, languageId)
 
-        if(!metadata || metadata.title) {
-            return res.status(400).json({ error: "Invalid request data" });
+        if (!metadata || !metadata.title || !languageId) {
+            return res.status(400).json({ error: "Title and language are required" });
         }
+
+        const languageInfo = getLanguageById(languageId);
+        const language = await db.language.upsert({
+            where: {
+                judge0_id: languageId
+            },
+            update: {},
+            create: {
+                name: languageInfo.name,
+                extension: languageInfo.extension,
+                judge0_id: languageId
+            }
+        });
+
+        if (!language) {
+            return res.status(400).json({ error: "Invalid language selected" });
+        }
+
         const existingSnippet = await db.codeSnippet.findFirst({
             where: {
                 title: metadata.title,
@@ -19,17 +36,16 @@ export const newSnippet = async (req: Request, res: Response) => {
         });
 
         if (existingSnippet) {
-            res.status(409).json({
-                message: "Snippet Already Exist"
-            })
-            return;
+            return res.status(409).json({
+                message: "Snippet Already Exists"
+            });
         }
 
         const snippet = await db.codeSnippet.create({
             data: {
                 title: metadata.title,
                 description: metadata.description,
-                language_id: languageId,
+                language_id: language.id,
                 developer_id: userId,
                 test_cases: metadata.testCases ? {
                     create: metadata.testCases.map((tc: {
@@ -39,27 +55,36 @@ export const newSnippet = async (req: Request, res: Response) => {
                         expected_output: tc.expected
                     }))
                 } : undefined,
+            },
+            include: {
+                language: true,
+                test_cases: true
             }
-        })
+        });
 
         if (tags && tags.length > 0) {
-            for (const tagName of tags) {
-                let tag = await db.tag.findFirst({ where: { name: tagName } });
+            const tagPromises = tags.map(async (tagName: string) => {
+                const tag = await db.tag.upsert({
+                    where: { name: tagName },
+                    update: {},
+                    create: { name: tagName }
+                });
 
-                if (!tag) {
-                    tag = await db.tag.create({ data: { name: tagName } });
-                }
-
-                await db.codeSnippetTag.create({
+                return db.codeSnippetTag.create({
                     data: {
                         code_snippet_id: snippet.id,
                         tag_id: tag.id
                     }
                 });
-            }
+            });
+
+            await Promise.all(tagPromises);
         }
 
-        return res.json(snippet);
+        return res.status(201).json({
+            success: true,
+            snippet
+        });
     } catch (error) {
         console.error('Error creating snippet:', error);
         return res.status(500).json({ error: 'Internal Server Error' });

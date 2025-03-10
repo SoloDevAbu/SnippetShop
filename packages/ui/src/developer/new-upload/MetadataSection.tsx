@@ -6,8 +6,8 @@ export function MetadataSection() {
 
     const { metadata, setMetadata } = useMetadata();
 
-    const handleFieldChange = (filed: "title" | "description" | "tags", value: string) => {
-        setMetadata((prev) => ({ ...prev, [filed]: value }))
+    const handleFieldChange = (field: "title" | "description" | "tags", value: string) => {
+        setMetadata((prev) => ({ ...prev, [field]: value }))
     }
     return (
         <div className="flex flex-col gap-4 border border-gray-800 rounded p-4">

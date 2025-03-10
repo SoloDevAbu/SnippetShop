@@ -8,11 +8,11 @@ export default function CategoryJs() {
                 <img src={jsLogo.src} alt="JavaScript" className="size-24 rounded-full" />
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <SnippetCard />
-                <SnippetCard />
-                <SnippetCard />
-                <SnippetCard />
-                <SnippetCard />
+                <SnippetCard language="Js"/>
+                <SnippetCard language="Js"/>
+                <SnippetCard language="Js"/>
+                <SnippetCard language="Js"/>
+                <SnippetCard language="Js"/>
             </div>
         </div>
     )

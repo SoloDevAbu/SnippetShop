@@ -35,6 +35,7 @@ model Language {
   id            String        @id @default(cuid())
   name          String        @unique
   judge0_id     Int           @unique
+  extension     String
   code_snippets CodeSnippet[]
 }
 
@@ -57,16 +58,16 @@ model CodeSnippet {
   id           String           @id @default(cuid())
   title        String
   description  String
-  language_id  String?
-  developer_id String?
+  language_id  String
+  developer_id String
   created_at   DateTime         @default(now())
   updated_at   DateTime         @updatedAt
   status       Status           @default(PENDING)
   test_cases   TestCase[]
   tags         CodeSnippetTag[]
   purchases    Purchase[]
-  language     Language?        @relation(fields: [language_id], references: [id])
-  developer    User?            @relation(fields: [developer_id], references: [id])
+  language     Language        @relation(fields: [language_id], references: [id])
+  developer    User            @relation(fields: [developer_id], references: [id])
 }
 
 model TestCase {

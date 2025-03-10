@@ -46,8 +46,6 @@ export const authOptions = {
                         }
                     });
 
-                    console.log("Database user found:", user);
-
                     if (user) {
                         // Return token with database user information
                         return {
@@ -59,7 +57,7 @@ export const authOptions = {
                         };
                     }
                 }
-                // Return unchanged token if no user found or no account/profile
+                
                 return token;
             } catch (error) {
                 console.error("JWT callback error:", error);
@@ -69,8 +67,6 @@ export const authOptions = {
 
         async session({ session, token }: { session: any; token: any }) {
             try {
-                console.log("Session callback token:", token);
-                
                 return {
                     ...session,
                     user: {
