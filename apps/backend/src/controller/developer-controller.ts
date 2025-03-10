@@ -2,13 +2,19 @@ import { Request, Response } from "express";
 import db from "@repo/db/client"
 import { getLanguageById} from "@repo/constants/languages"
 
-export const newSnippet = async (req: Request, res: Response) => {
+export const newSnippet = async (req: Request, res: Response): Promise<void> => {
     const userId = req.user?.userId
+    if (!userId) {
+        res.status(401).json({ error: "Unauthorized" });
+        return
+    }
+
     try {
         const { metadata, tags, languageId } = req.body;
 
         if (!metadata || !metadata.title || !languageId) {
-            return res.status(400).json({ error: "Title and language are required" });
+            res.status(400).json({ error: "Title and language are required" });
+            return
         }
 
         const languageInfo = getLanguageById(languageId);
@@ -25,7 +31,8 @@ export const newSnippet = async (req: Request, res: Response) => {
         });
 
         if (!language) {
-            return res.status(400).json({ error: "Invalid language selected" });
+            res.status(400).json({ error: "Invalid language selected" });
+            return
         }
 
         const existingSnippet = await db.codeSnippet.findFirst({
@@ -36,9 +43,10 @@ export const newSnippet = async (req: Request, res: Response) => {
         });
 
         if (existingSnippet) {
-            return res.status(409).json({
+            res.status(409).json({
                 message: "Snippet Already Exists"
             });
+            return
         }
 
         const snippet = await db.codeSnippet.create({
@@ -81,23 +89,43 @@ export const newSnippet = async (req: Request, res: Response) => {
             await Promise.all(tagPromises);
         }
 
-        return res.status(201).json({
+        res.status(201).json({
             success: true,
             snippet
         });
     } catch (error) {
         console.error('Error creating snippet:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 }
 
-export const getAllSnippets = async (req: Request, res: Response) => {
+export const getAllSnippets = async (req: Request, res: Response): Promise<void> => {
     const userId = req.user?.userId;
 
     try {
         const snippets = await db.codeSnippet.findMany({
             where: {
                 developer_id: userId
+            },
+            select: {
+                id: true,
+                title: true,
+                description: true,
+                language: {
+                    select: {
+                        name: true,
+                        extension: true
+                    }
+                },
+                tags: {
+                    select: {
+                        tag: {
+                            select: {
+                                name: true
+                            }
+                        }
+                    }
+                }
             }
         })
 
@@ -105,7 +133,7 @@ export const getAllSnippets = async (req: Request, res: Response) => {
             res.status(404).json({
                 message: "No snippets, Create Your First snippet"
             })
-            return;
+            return
         }
 
         res.status(200).json({
@@ -113,7 +141,7 @@ export const getAllSnippets = async (req: Request, res: Response) => {
             snippets
         })
     } catch (error) {
-        return res.status(500).json({
+        res.status(500).json({
             success: false,
             error: (error as Error).message
         })
@@ -121,7 +149,7 @@ export const getAllSnippets = async (req: Request, res: Response) => {
 
 }
 
-export const getSnippet = async (req: Request, res: Response) => {
+export const getSnippet = async (req: Request, res: Response): Promise<void> => {
     const userId = req.user?.userId;
     const { snippetId } = req.params;
 
@@ -137,6 +165,7 @@ export const getSnippet = async (req: Request, res: Response) => {
                 success: false,
                 message: 'You are not Authorized'
             })
+            return
         }
 
         const snippet = await db.codeSnippet.findFirst({
@@ -150,14 +179,14 @@ export const getSnippet = async (req: Request, res: Response) => {
             snippet
         })
     } catch (error) {
-        return res.status(500).json({
+        res.status(500).json({
             success: false,
             error: (error as Error).message
         })
     }
 }
 
-export const editSnippet = async (req: Request, res: Response) => {
+export const editSnippet = async (req: Request, res: Response): Promise<void> => {
     const userId = req.user?.userId;
     const { snippetId } = req.params;
     const { metadata, languageId } = req.body;
@@ -174,6 +203,7 @@ export const editSnippet = async (req: Request, res: Response) => {
                 success: false,
                 message: "UnAuthorized"
             })
+            return
         }
 
         const snippet = await db.codeSnippet.upsert({
@@ -183,7 +213,12 @@ export const editSnippet = async (req: Request, res: Response) => {
             create: {
                 title: metadata.title,
                 description: metadata.description,
-                language_id: languageId,
+                language: {
+                    connect: { id: languageId }
+                },
+                developer: {
+                    connect: { id: userId }
+                },
                 test_cases: {
                     create: metadata.testCases.map((tc: {
                         input: string; expected: string
@@ -211,14 +246,14 @@ export const editSnippet = async (req: Request, res: Response) => {
             snippet
         })
     } catch (error) {
-        return res.status(500).json({
+        res.status(500).json({
             success: false,
             error: (error as Error).message
         })
     }
 }
 
-export const totalSnippetCount = async (req: Request, res: Response): Promise<any> => {
+export const totalSnippetCount = async (req: Request, res: Response): Promise<void>=> {
     const userId  = req.user?.userId
     try {
         const count = await db.codeSnippet.count({
@@ -226,9 +261,69 @@ export const totalSnippetCount = async (req: Request, res: Response): Promise<an
                 developer_id: userId
             }
         });
-        return res.json({ success: true, count });
+        res.json({ success: true, count });
     } catch (error) {
-        return res.status(500).json({
+        res.status(500).json({
+            success: false,
+            error: (error as Error).message
+        });
+    }
+}
+
+export const snippetStatus = async (req: Request, res: Response): Promise<void> => {
+    const userId = req.user?.userId;
+
+    try {
+        const allSnippets = await db.codeSnippet.count({
+            where: {
+                developer_id: userId
+            }
+        });
+
+        const pendingSnippets = await db.codeSnippet.count({
+            where: {
+                developer_id: userId,
+                status: "PENDING"
+            }
+        })
+
+        const approvedSnippets = await db.codeSnippet.count({
+            where: {
+                developer_id: userId,
+                status: "APPROVED"
+            }
+        })
+
+        const snippets = await db.codeSnippet.findMany({
+            where: {
+                developer_id: userId
+            },
+            select: {
+                id: true,
+                title: true,
+                description: true,
+                language: {
+                    select: {
+                        name: true,
+                        extension: true
+                    }
+                },
+                tags: {
+                    select: {
+                        tag: {
+                            select: {
+                                name: true
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+
+        res.json({allSnippets, pendingSnippets, approvedSnippets, snippets})
+    } catch (error) {
+        res.status(500).json({
             success: false,
             error: (error as Error).message
         });

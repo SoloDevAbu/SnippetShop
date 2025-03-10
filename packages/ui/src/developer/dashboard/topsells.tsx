@@ -3,7 +3,15 @@ import { Settings2 } from "lucide-react"
 import { TopSellCard } from "./TopSellCard"
 import { Trash2 } from "lucide-react"
 
-export const TopSells = () => {
+interface Snippet {
+    id: string;
+    title: string;
+    language: {
+        name: string
+    }
+}
+
+export const TopSells = ({snippetInfo}:{ snippetInfo: Snippet[]}) => {
     return (
         <div className="bg-zinc-900 rounded-lg p-4">
             <div className="flex justify-between">
@@ -25,12 +33,14 @@ export const TopSells = () => {
                     </div>
                 </div>
                 <div className="flex flex-col gap-2">
-                    <TopSellCard title="Reverse LinkList" language="C++" sells={16} />
-                    <TopSellCard title="Reverse LinkList" language="JavaScript" sells={64} />
-                    <TopSellCard title="Reverse LinkList" language="Python" sells={47} />
-                    <TopSellCard title="Reverse LinkList" language="C#" sells={22} />
-                    <TopSellCard title="Reverse LinkList" language="C" sells={8} />
-                    <TopSellCard title="Reverse LinkList" language="Java" sells={36} />
+                    {snippetInfo.map((snippet) => (
+                        <TopSellCard 
+                            key={snippet.id}
+                            title={snippet.title}
+                            language={snippet.language.name}
+                            sells={16}
+                        />
+                    ))}
                 </div>
             </div>
         </div>

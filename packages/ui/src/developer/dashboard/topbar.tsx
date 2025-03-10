@@ -3,10 +3,12 @@
 import { Plus } from "lucide-react"
 import { BellRing } from "lucide-react"
 import { CircleUser } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export const Topbar = ({title}: {
     title: string
 }) => {
+    const router = useRouter()
     return(
         <div className="flex justify-between p-4 items-center border-b border-gray-800 mb-2">
             <h1 className="font-bold text-lg text-gray-300">
@@ -14,7 +16,9 @@ export const Topbar = ({title}: {
             </h1>
             <div className="flex gap-4 justify-center items-center">
                 <div>
-                    <button className="flex gap-2 bg-green-600 rounded-md px-2 py-1">{<Plus/>}Add New</button>
+                    <button className="flex gap-2 bg-green-600 rounded-md px-2 py-1"
+                        onClick={() => router.push("/developer/new-upload")}
+                    >{<Plus/>}Add New</button>
                 </div>
                 <div>
                     <button className="bg-gray-700 rounded-full p-1.5 shadow-sm shadow-gray-200"><BellRing/></button>

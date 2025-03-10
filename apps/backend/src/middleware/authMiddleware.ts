@@ -4,11 +4,12 @@ import { encode, decode } from "next-auth/jwt";
 import dotenv from 'dotenv';
 dotenv.config();
 
-export const AuthMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+export const AuthMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const token = req.cookies["__Secure-next-auth.session-token"] || req.cookies["next-auth.session-token"];
     if (!token) {
-      return res.status(401).json({ message: "No token received" });
+      res.status(401).json({ message: "No token received" });
+      return
     }
 
     const secret = process.env.NEXTAUTH_SECRET;
@@ -21,7 +22,8 @@ export const AuthMiddleware = async (req: Request, res: Response, next: NextFunc
     });
 
     if (!decodedToken) {
-      return res.status(401).json({ message: "Invalid token" });
+      res.status(401).json({ message: "Invalid token" });
+      return
     }
     
     req.user = {
@@ -33,6 +35,6 @@ export const AuthMiddleware = async (req: Request, res: Response, next: NextFunc
     next();
   } catch (error) {
     console.error("Token verification failed:", error);
-    return res.status(401).json({ message: "Invalid token" });
+    res.status(401).json({ message: "Invalid token" });
   }
 };
