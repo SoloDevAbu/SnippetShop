@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getJsSnippets } from "../../controller/category";
+import { getJsSnippets } from "../../controller/snippet-category";
 const router = Router();
 
 router.get("/js", getJsSnippets);

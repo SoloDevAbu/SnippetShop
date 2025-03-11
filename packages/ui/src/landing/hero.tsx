@@ -1,6 +1,6 @@
 
 import { Card } from '../components/card'
-import { categories } from '../constants/categories'
+import { categories } from '../../constants/categories'
 
 export const Hero = () => {
     return (

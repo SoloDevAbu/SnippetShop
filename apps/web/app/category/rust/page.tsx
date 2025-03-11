@@ -1,19 +1,11 @@
-import { SnippetCard } from "@repo/ui/category/snippet-card";
-import { rustLogo } from "../../../../../packages/ui/src/constants/categories";
+import { rustLogo } from "../../../../../packages/ui/constants/categories";
+import { CategoryPage } from "@/components/category-page";
 
-export default function CategoryRust() {
+export default function CategoryTypeScript() {
     return (
-            <div className="m-4 ">
-                <div className="flex justify-center items-center mb-4">
-                    <img src={rustLogo.src} alt="Rust" className="size-24 rounded-full" />
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    <SnippetCard />
-                    <SnippetCard />
-                    <SnippetCard />
-                    <SnippetCard />
-                    <SnippetCard />
-                </div>
-            </div>
-        )
+        <CategoryPage 
+            categoryPath="typescript" 
+            logo={{ src: rustLogo.src, alt: "TypeScript" }} 
+        />
+    );
 }

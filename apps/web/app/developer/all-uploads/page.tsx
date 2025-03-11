@@ -3,7 +3,7 @@
 import AllUploadCard from "@repo/ui/developer/all-upload/alluploadcard";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Snippet } from "@/types/types";
+import { Snippet } from "@/types/snippet";
 
 export default function AllUploads() {
     const [snippets, setSnippets] = useState<Snippet[]>([]);
