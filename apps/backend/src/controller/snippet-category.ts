@@ -8,7 +8,7 @@ export const getJsSnippets = async (req: Request, res: Response): Promise<void> 
         const snippets = await db.codeSnippet.findMany({
             where: {
                 language: {
-                    extension: "js"
+                    extension: category
                 }
             },
             select: {

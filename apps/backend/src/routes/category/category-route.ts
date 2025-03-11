@@ -2,6 +2,6 @@ import { Router } from "express";
 import { getJsSnippets } from "../../controller/snippet-category";
 const router = Router();
 
-router.get("/js", getJsSnippets);
+router.get("/:category", getJsSnippets);
 
 export default router;

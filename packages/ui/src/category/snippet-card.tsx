@@ -4,15 +4,16 @@ interface Tag {
     }
 }
 
-export const SnippetCard = ({title, language, description, tags}: {
+export const SnippetCard = ({ title, language, description, tags, onClick }: {
     title: string;
-  language: string;
-  description: string;
-  tags: Tag[];
+    language: string;
+    description: string;
+    tags: Tag[];
+    onClick: () => void
 }) => {
-    return(
+    return (
         <div className="flex flex-col gap-3 bg-zinc-900 rounded-lg p-4">
-            
+
             <div className="flex justify-between">
                 <h1 className="text-gray-300">{title}</h1>
                 <h1 className="bg-zinc-800 px-2 py-1 rounded-lg">{language}</h1>
@@ -27,7 +28,9 @@ export const SnippetCard = ({title, language, description, tags}: {
                 ))}
             </div>
             <div className="flex justify-center">
-                <button className="bg-blue-800 px-16 py-2.5 rounded-lg font-semibold text-gray-200">View Snippet</button>
+                <button
+                    onClick={onClick}
+                    className="bg-blue-800 px-16 py-2.5 rounded-lg font-semibold text-gray-200">View Snippet</button>
             </div>
         </div>
     )
