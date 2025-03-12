@@ -3,6 +3,7 @@
 import { JSX } from "react/jsx-runtime";
 import { TopBar } from "../../../../packages/ui/src/category/topbar";
 import { usePathname } from "next/navigation";
+import { MetadataProvider } from "@repo/ui/developer/new-upload/MetadataContext";
 
 export default function Layout({
     children
@@ -15,7 +16,9 @@ export default function Layout({
         <>
             {!isSnippetPage && <TopBar />}
             <div className={!isSnippetPage ? "mt-24" : ""}>
-                {children}
+                <MetadataProvider>
+                    {children}
+                </MetadataProvider>
             </div>
         </>
     )
