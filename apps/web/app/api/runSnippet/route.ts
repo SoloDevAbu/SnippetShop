@@ -59,7 +59,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             }
         });
 
-        console.log(submissionsResponse.data);
+        // console.log(submissionsResponse.data);
         // Use the correct property name (submissions) to extract tokens
         const submissionTokens: string[] = submissionsResponse.data.map(
             (submission: SubmissionResponse) => submission.token
@@ -91,7 +91,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
         const result: SubmissionResult = resultResponse.data;
 
-        console.log(result);
+        // console.log(result);
         return NextResponse.json(result);
     } catch (error) {
         console.error('Error submitting code:', error);

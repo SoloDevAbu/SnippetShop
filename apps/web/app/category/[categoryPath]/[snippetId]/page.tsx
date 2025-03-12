@@ -46,6 +46,8 @@ const SnippetPreview = () => {
     const [customTestCases, setCustonTestCases] = useState<TestCase[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [canBuy, setCanBuy] = useState(false);
+
     const code = `const fs = require("fs");
                 // Read input from stdin
                 const input = fs.readFileSync(0, "utf-8").trim().split(" ");
@@ -118,6 +120,10 @@ const SnippetPreview = () => {
                 isSuccess: submission.status.id === 3 && actualOutput === expectedOutput
             };
         });
+        const statuses = response.data.submissions.map((result: any) => result.status.description);
+        const allAccepted = statuses.every((status: string) => status === "Accepted");
+
+        setCanBuy(allAccepted);
 
         setTestResults(results);
     };
@@ -141,7 +147,7 @@ const SnippetPreview = () => {
     return (
         <div className="flex flex-col h-screen overflow-hidden">
             <div className="flex-none">
-                <SnippetTopBar onClick={handleRun} />
+                <SnippetTopBar onClick={handleRun} canBuy={canBuy}/>
             </div>
 
             <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
