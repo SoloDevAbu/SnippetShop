@@ -1,5 +1,5 @@
 import { SidebarItem } from "@repo/ui/developer/dashboard/sidebarItem";
-import { JSX } from "react/jsx-runtime";
+import { checkDeveloperAccess } from "@/utils/auth";
 
 import { HomeIcon } from "lucide-react";
 import { FileCode } from "lucide-react";
@@ -8,11 +8,12 @@ import { Topbar } from "@repo/ui/developer/dashboard/topbar";
 import { SidebarTop } from "@repo/ui/developer/dashboard/sidebarTop";
 import { MetadataProvider } from "@repo/ui/developer/new-upload/MetadataContext";
 
-export default function Layout({
+export default async function Layout({
   children
 }: {
   children: React.ReactNode;
-}): JSX.Element {
+}) {
+  const session = await checkDeveloperAccess()
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
