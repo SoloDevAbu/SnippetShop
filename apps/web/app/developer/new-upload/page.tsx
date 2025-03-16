@@ -51,17 +51,17 @@ export default function NewUpload() {
   };
 
   return (
-      <div className="w-full">
+      <div className="w-full h-screen flex flex-col">
         <div className="">
           <NavBar onSubmit={handleSubmit} onRun={handleRun} />
         </div>
-        <div className="w-full flex flex-col md:flex-row gap-8">
+        <div className="w-full flex flex-col md:flex-row gap-8 h-full p-4">
           {/*This is for metadata */}
-          <div className="md:w-1/2">
+          <div className="md:w-1/2 h-[calc(100vh-5rem)]">
             <MetadataSection />
           </div>
           {/*This part for code written */}
-          <div className="md:w-1/2">
+          <div className="md:w-1/2 h-[calc(100vh-5rem)]">
             <CodeSection code={code} onCodeChange={setCode} onLanguageChange={setSelectedLanguage}/>
           </div>
         </div>

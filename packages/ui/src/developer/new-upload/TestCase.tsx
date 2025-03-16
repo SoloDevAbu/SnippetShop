@@ -15,8 +15,8 @@ export function TestCase({
     onExpectedChange: (value: string) => void
 }): JSX.Element {
     return (
-        <div className="shadow-sm shadow-rose-300 rounded-lg py-4 px-2">
-            <h1 className="font-semibold text-gray-300">{title}</h1>
+        <div className="bg-gray-900/30 shadow-lg shadow-rose-500/5 rounded-lg py-4 px-3 border border-gray-800/50 transition-all duration-200 hover:border-gray-700">
+            <h1 className="font-semibold text-gray-200 mb-3 px-3">{title}</h1>
             <InputBox
                 title="Input"
                 value={inputValue}

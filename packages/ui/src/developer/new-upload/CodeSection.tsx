@@ -10,7 +10,7 @@ interface CodeSectionProps {
 
 export function CodeSection({ code, onCodeChange, onLanguageChange }: CodeSectionProps): JSX.Element {
     return (
-        <div className="border border-gray-800 rounded p-4 h-full">
+        <div className="border border-gray-800 rounded p-4 h-full overflow-y-auto">
             <CodeEditor code={code} onCodeChange={onCodeChange} onLanguageChange={onLanguageChange}/>
         </div>
     )

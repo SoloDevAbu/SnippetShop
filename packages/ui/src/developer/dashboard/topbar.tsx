@@ -15,7 +15,7 @@ export const Topbar = ({
     const { toggleMenu } = useMobileMenu()
 
     return(
-        <div className="flex justify-between p-4 md:p-5 items-center border-b border-gray-800/40 backdrop-blur-xl bg-gray-900/80 relative z-50">
+        <div className="flex justify-between p-4 md:p-5 items-center border-b border-gray-800/40 backdrop-blur-xl bg-gray-900/80">
             <div className="flex items-center gap-4">
                 {showMenuButton && (
                     <button 

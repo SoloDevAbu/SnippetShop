@@ -10,10 +10,10 @@ export function MetadataSection() {
         setMetadata((prev) => ({ ...prev, [field]: value }))
     }
     return (
-        <div className="flex flex-col gap-4 border border-gray-800 rounded p-4">
+        <div className="flex flex-col gap-6 border border-gray-800/50 bg-gray-900/20 backdrop-blur-sm rounded-xl p-6 h-full overflow-y-auto">
             {/*Title */}
             <div>
-                <h1 className="font-bold text-gray-300">Title<span className="text-red-500">*</span></h1>
+                <h1 className="font-bold text-gray-200 mb-2 px-3">Title<span className="text-rose-500 ml-1">*</span></h1>
                 <InputBox
                     title="Code Snippet title"
                     value={metadata.title}
@@ -22,7 +22,7 @@ export function MetadataSection() {
             </div>
             {/*Description */}
             <div>
-                <h1 className="font-bold text-gray-300">Description<span className="text-red-500">*</span></h1>
+                <h1 className="font-bold text-gray-200 mb-2 px-3">Description<span className="text-rose-500 ml-1">*</span></h1>
                 <InputBox
                     title="Description of Code Snippet"
                     value={metadata.description}
@@ -31,7 +31,7 @@ export function MetadataSection() {
             </div>
             {/*Tags */}
             <div>
-                <h1 className="font-bold text-gray-300">Tags<span className="text-red-500">*</span></h1>
+                <h1 className="font-bold text-gray-200 mb-2 px-3">Tags<span className="text-rose-500 ml-1">*</span></h1>
                 <InputBox
                     title="Tags (comma seperated)"
                     value={metadata.tags}

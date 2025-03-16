@@ -28,15 +28,17 @@ export default async function Layout({
         </MobileMenu>
 
         {/* Desktop Sidebar */}
-        <aside className="hidden lg:block w-52 md:w-72 border-r border-gray-800">
+        <aside className="hidden lg:block w-52 md:w-72 border-r border-gray-800 fixed top-0 left-0 h-screen">
           <SidebarTop />
           {sidebarContent}
         </aside>
 
         {/* Main content area */}
-        <main className="flex flex-col flex-grow">
-          <Topbar title="Dashboard" showMenuButton />
-          <div className="flex-grow">
+        <main className="flex-grow flex flex-col lg:ml-72">
+          <div className="fixed top-0 right-0 left-0 lg:left-72 z-50">
+            <Topbar title="Dashboard" showMenuButton />
+          </div>
+          <div className="flex-grow mt-[73px] md:mt-[81px]">
             <MetadataProvider>
               {children}
             </MetadataProvider>
