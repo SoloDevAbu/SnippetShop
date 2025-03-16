@@ -3,8 +3,8 @@ import { Plus } from 'lucide-react'
 export function AddTestCase({ onClick }: { onClick: () => void }) {
     return (
         <div onClick={onClick} 
-        className='items-center justify-center flex h-full min-h-[200px] hover:cursor-pointer border border-dashed border-gray-700/50 rounded-lg transition-all duration-200 hover:border-rose-500/50 hover:bg-rose-500/5 group'>
-            <Plus size={38} className="text-gray-500 group-hover:text-rose-400 transition-colors"/>
+        className='items-center justify-center flex h-full min-h-[200px] hover:cursor-pointer border-2 border-dashed border-white/5 rounded-xl transition-all duration-500 hover:border-indigo-500/50 hover:bg-indigo-500/5 group backdrop-blur-sm bg-black/20 shadow-2xl animate-float'>
+            <Plus size={42} className="text-gray-500 group-hover:text-indigo-400 transition-all duration-500 transform group-hover:rotate-180 group-hover:scale-110"/>
         </div>
     )
 }

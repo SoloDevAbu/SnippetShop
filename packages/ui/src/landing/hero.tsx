@@ -37,6 +37,7 @@ export const Hero = () => {
             try {
                 const response = await axios.get(`http://localhost:5000/api/v1/search/snippets?query=${debounceSearch}`);
                 setResults(response.data.snippets);
+                console.log(response.data);
             } catch (error) {
                 console.error('Search failed', error);
                 setResults([]);
