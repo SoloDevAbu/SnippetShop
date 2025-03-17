@@ -44,17 +44,15 @@ export const Appbar = () => {
               </span>
             </motion.div>
 
-            {/* Search Bar - Desktop */}
+            {/* Featured Collections Navigation */}
             <div className="hidden md:flex flex-1 max-w-md mx-8">
-              <div className="relative w-full">
-                <input
-                  type="text"
-                  placeholder="Search snippets..."
-                  className="w-full px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg 
-                           focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
-                           transition-all duration-300"
-                />
-                <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
+              <div className="flex items-center gap-4 w-full">
+                <a href="/trending" className="px-3 py-1.5 rounded-full text-sm bg-purple-500/10 text-purple-400 
+                   hover:bg-purple-500/20 transition-all duration-300">🔥 Trending</a>
+                <a href="/new" className="px-3 py-1.5 rounded-full text-sm bg-blue-500/10 text-blue-400 
+                   hover:bg-blue-500/20 transition-all duration-300">✨ New</a>
+                <a href="/popular" className="px-3 py-1.5 rounded-full text-sm bg-pink-500/10 text-pink-400 
+                   hover:bg-pink-500/20 transition-all duration-300">⭐ Popular</a>
               </div>
             </div>
 
